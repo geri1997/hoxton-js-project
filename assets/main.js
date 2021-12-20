@@ -4,6 +4,7 @@ const state = {
 		password: "test123",
 		scores: []
 	},
+	questions: [],
 	question: 0,
 	gameHasStarted: false,
 	modalMessage: "",
@@ -167,22 +168,21 @@ function renderGameMenu(mainEl) {
 	const hardOption = document.createElement("option");
 	hardOption.value = "hard";
 	hardOption.textContent = "Hard";
-	if (state.selectedDifficulty === "easy") {
-		easyOption.selected = true;
-	} else if (state.selectedDifficulty === "medium") {
-		mediumOption.selected = true;
-	} else {
-		hardOption.selected = true;
-	}
 
 	const startGameBtn = document.createElement("button");
 	startGameBtn.setAttribute("class", "start-btn");
 	startGameBtn.textContent = "START GAME";
-	selectEl.value = state.selectedCategory;
+	selectEl.value = state.selectedDifficulty;
 	selectEl.addEventListener("change", (e) => {
 		state.selectedDifficulty = selectEl.value;
 
 		render();
+	});
+
+	startGameBtn.addEventListener("click", () => {
+		getQuestions().then((questions) => {
+			state.questions = questions;
+		});
 	});
 	difficultyLabel.append(selectEl);
 	selectEl.append(easyOption, mediumOption, hardOption);
@@ -242,6 +242,12 @@ function render() {
 	renderModal();
 }
 // SERVER FUNCTIONS
+function getQuestions() {
+	return fetch(`https://opentdb.com/api.php?amount=15&category=${state.selectedCategory.id}&difficulty=${state.selectedDifficulty}&type=multiple`)
+		.then((response) => response.json())
+		.then((result) => console.log(result));
+}
+
 function signIn(username, password) {
 	return fetch(`http://localhost:3000/users/${username}`)
 		.then(function (resp) {
