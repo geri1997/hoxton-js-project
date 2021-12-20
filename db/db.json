@@ -4,6 +4,11 @@
       "id": "test",
       "password": "test123",
       "scores": []
+    },
+    {
+      "id": "test1",
+      "password": "test123",
+      "scores": []
     }
   ]
 }

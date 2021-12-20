@@ -1,7 +1,8 @@
 const state = {
 	user: null,
 	question: 0,
-	gameIsPlaying: false
+	gameIsPlaying: false,
+	modalMessage: ""
 };
 // RENDER FUNCTIONS
 
@@ -134,12 +135,40 @@ function renderSignUp(mainEl) {
 	signUpSection.append(signUpTitle, signUpForm);
 	mainEl.append(signUpSection);
 }
-function renderLandingPage() {}
+function renderModal() {
+	console.log("");
+	if (state.modalMessage !== "") {
+		const modalWrapper = document.createElement("section");
+		modalWrapper.setAttribute("class", "modal-wrapper");
+		const modal = document.createElement("div");
+		modal.setAttribute("class", "modal");
+		h2El = document.createElement("h2");
+		h2El.textContent = state.modalMessage;
+		const okButton = document.createElement("button");
+		okButton.setAttribute("class", "ok-button");
+		okButton.textContent = "OK";
+		okButton.addEventListener("click", () => {
+			state.modalMessage = "";
+			render();
+		});
+		const modalCloseBtn = document.createElement("button");
+		modalCloseBtn.textContent = "X";
+		modalCloseBtn.setAttribute("class", "close-modal-btn");
+		modalCloseBtn.addEventListener("click", () => {
+			state.modalMessage = "";
+			render();
+		});
+		modal.append(h2El, okButton, modalCloseBtn);
+		modalWrapper.append(modal);
+		document.body.append(modalWrapper);
+	}
+}
 
 function render() {
 	document.body.innerHTML = "";
 	renderHeader();
 	renderMain();
+	renderModal();
 }
 // SERVER FUNCTIONS
 function signIn(username, password) {
@@ -149,11 +178,12 @@ function signIn(username, password) {
 		})
 		.then(function (user) {
 			if (user.password === password) {
-				alert("Welcome");
+				state.modalMessage = "Welcome";
 				state.user = user;
 				render();
 			} else {
-				alert("Wrong username/password. Please try again.");
+				state.modalMessage = "Wrong username/password. Please try again.";
+				render();
 			}
 		});
 }
@@ -165,9 +195,11 @@ function signUp(user) {
 		if (!resp.ok) {
 			state.user = user;
 			createNewUserOnServer(user);
-			alert("Welcome");
+			state.modalMessage = "Welcome";
+			render();
 		} else {
-			alert("This username already exists.");
+			state.modalMessage = "This username already exists.";
+			render();
 		}
 	});
 }
