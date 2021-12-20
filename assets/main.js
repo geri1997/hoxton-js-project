@@ -1,7 +1,7 @@
 const state = {
 	user: null,
 	question: 0,
-	gameIsPlaying: false,
+	gameHasStarted: false,
 	modalMessage: ""
 };
 // RENDER FUNCTIONS
@@ -25,10 +25,10 @@ function renderHeader() {
 
 	headerEl.append(currentScoreEl, h1El, navEl);
 
-	if (state.user === null || !state.gameIsPlaying) {
+	if (state.user === null || state.gameHasStarted) {
 		navEl.style.visibility = "hidden";
 	}
-	if (!state.gameIsPlaying) {
+	if (!state.gameHasStarted) {
 		currentScoreEl.style.visibility = "hidden";
 	}
 	document.body.append(headerEl);
@@ -136,7 +136,6 @@ function renderSignUp(mainEl) {
 	mainEl.append(signUpSection);
 }
 function renderModal() {
-	console.log("");
 	if (state.modalMessage !== "") {
 		const modalWrapper = document.createElement("section");
 		modalWrapper.setAttribute("class", "modal-wrapper");
@@ -190,8 +189,6 @@ function signIn(username, password) {
 
 function signUp(user) {
 	fetch(`http://localhost:3000/users/${user.id}`).then((resp) => {
-		console.log(user.id);
-		console.log(resp.ok);
 		if (!resp.ok) {
 			state.user = user;
 			createNewUserOnServer(user);
