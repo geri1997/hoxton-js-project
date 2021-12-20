@@ -1,8 +1,24 @@
 const state = {
-	user: null,
+	user: {
+		id: "test",
+		password: "test123",
+		scores: []
+	},
 	question: 0,
 	gameHasStarted: false,
-	modalMessage: ""
+	modalMessage: "",
+	allCategories: [
+		{ name: "All Categories", id: "" },
+		{ name: "General Knowledge", id: 9 },
+		{ name: "Mathematics", id: 19 },
+		{ name: "Geography", id: 22 },
+		{ name: "Sports", id: 21 },
+		{ name: "Film", id: 11 },
+		{ name: "Politics", id: 24 },
+		{ name: "Celebrities", id: 26 }
+	],
+	selectedCategory: { name: "All Categories", id: "" },
+	selectedDifficulty: "easy"
 };
 // RENDER FUNCTIONS
 
@@ -41,6 +57,9 @@ function renderMain() {
 		mainEl.setAttribute("class", "landing-main");
 		renderSignIn(mainEl);
 		renderSignUp(mainEl);
+	} else if (!state.gameHasStarted) {
+		mainEl.setAttribute("class", "menu-main");
+		renderGameMenu(mainEl);
 	}
 
 	document.body.append(mainEl);
@@ -135,6 +154,59 @@ function renderSignUp(mainEl) {
 	signUpSection.append(signUpTitle, signUpForm);
 	mainEl.append(signUpSection);
 }
+function renderGameMenu(mainEl) {
+	const difficultyLabel = document.createElement("label");
+	difficultyLabel.textContent = "Difficulty: ";
+	const selectEl = document.createElement("select");
+	const easyOption = document.createElement("option");
+	easyOption.value = "easy";
+	easyOption.textContent = "Easy";
+	const mediumOption = document.createElement("option");
+	mediumOption.value = "medium";
+	mediumOption.textContent = "Medium";
+	const hardOption = document.createElement("option");
+	hardOption.value = "hard";
+	hardOption.textContent = "Hard";
+	if (state.selectedDifficulty === "easy") {
+		easyOption.selected = true;
+	} else if (state.selectedDifficulty === "medium") {
+		mediumOption.selected = true;
+	} else {
+		hardOption.selected = true;
+	}
+
+	const startGameBtn = document.createElement("button");
+	startGameBtn.setAttribute("class", "start-btn");
+	startGameBtn.textContent = "START GAME";
+	selectEl.value = state.selectedCategory;
+	selectEl.addEventListener("change", (e) => {
+		state.selectedDifficulty = selectEl.value;
+
+		render();
+	});
+	difficultyLabel.append(selectEl);
+	selectEl.append(easyOption, mediumOption, hardOption);
+
+	const categoriesDiv = document.createElement("div");
+	categoriesDiv.setAttribute("class", "categories");
+	for (const category of state.allCategories) {
+		const categoryBtn = document.createElement("button");
+		categoryBtn.setAttribute("class", "category");
+
+		if (category.name === state.selectedCategory.name) {
+			categoryBtn.classList.add("active");
+		}
+		categoryBtn.textContent = category.name;
+		categoryBtn.addEventListener("click", () => {
+			state.selectedCategory = category;
+			render();
+		});
+		categoriesDiv.append(categoryBtn);
+	}
+
+	mainEl.append(difficultyLabel, categoriesDiv, startGameBtn);
+}
+
 function renderModal() {
 	if (state.modalMessage !== "") {
 		const modalWrapper = document.createElement("section");
