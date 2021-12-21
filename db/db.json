@@ -8,7 +8,8 @@
         3150,
         0,
         50,
-        3150
+        3150,
+        0
       ],
       "highscore": 1230350
     },
@@ -21,13 +22,18 @@
     {
       "id": "geri",
       "password": "geri",
-      "scores": [100],
+      "scores": [
+        100
+      ],
       "highscore": 100
     },
     {
       "id": "rinor",
       "password": "rinor",
-      "scores": [50,50],
+      "scores": [
+        50,
+        50
+      ],
       "highscore": 50
     }
   ]

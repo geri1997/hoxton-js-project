@@ -28,6 +28,13 @@ header nav {
 main {
   display: grid;
   background-color: #560bad;
+  position: relative;
+}
+.timer{
+	position: absolute;
+	right: 5rem;
+	top: 4rem;
+	font-size: 1.5rem;
 }
 .game-main {
   display: grid;
