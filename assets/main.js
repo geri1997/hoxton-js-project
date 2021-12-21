@@ -19,8 +19,8 @@ const state = {
   selectedCategory: { name: "All Categories", id: "" },
   selectedDifficulty: "easy",
   currentScore: 0,
+  leaderboard: [],
 };
-
 
 //HELPER FUNCTIONS
 // function getShuffledAnswers() {
@@ -29,13 +29,13 @@ const state = {
 // 	shuffledAnswers.sort(() => Math.random() - 0.5);
 // 	return shuffledAnswers;
 // }
-function getAverageScore(){
-	if(state.user.scores===[]) return 0
-	let average= 0;
-	for (const score of state.user.scores) {
-		average= average+score;
-	}
-	return average/state.user.scores.length;
+function getAverageScore() {
+  if (state.user.scores === []) return 0;
+  let average = 0;
+  for (const score of state.user.scores) {
+    average = average + score;
+  }
+  return average / state.user.scores.length;
 }
 
 // // RENDER FUNCTIONS
@@ -58,7 +58,12 @@ function renderHeader() {
     render();
   });
   leaderboardA.textContent = "Leaderboard";
-
+  leaderboardA.addEventListener("click", (e) => {
+    state.modalMessage = "Leaderboard";
+    fetchLeaderboard().then(() => {
+      render();
+    });
+  });
   navEl.append(statsAEl, leaderboardA);
 
   headerEl.append(currentScoreEl, h1El, navEl);
@@ -311,7 +316,44 @@ function renderGame(mainEl) {
 }
 
 function renderModal() {
-  if (state.modalMessage === "Stats") {
+  if (state.modalMessage === "Leaderboard") {
+    const modalWrapper = document.createElement("section");
+    modalWrapper.setAttribute("class", "modal-wrapper");
+    const modal = document.createElement("div");
+    modal.setAttribute("class", "modal stats");
+
+    h2El = document.createElement("h2");
+    h2El.textContent = "Leaderboard";
+    modal.append(h2El);
+    for (let i = 0; i < 3; i++) {
+      const highscoreH3 = document.createElement("h3");
+      highscoreH3.textContent = `${i + 1}. ${state.leaderboard[i].id} : ${
+        state.leaderboard[i].highscore
+      }`;
+      modal.append(highscoreH3);
+    }
+	const h3El = document.createElement('h3');
+	const currentRank= state.leaderboard.findIndex(user => user.id === state.user.id) +1;
+	h3El.textContent = `Your current rank is: ${currentRank}`
+
+    const okButton = document.createElement("button");
+    okButton.setAttribute("class", "ok-button");
+    okButton.textContent = "OK";
+    okButton.addEventListener("click", () => {
+      state.modalMessage = "";
+      render();
+    });
+    const modalCloseBtn = document.createElement("button");
+    modalCloseBtn.textContent = "X";
+    modalCloseBtn.setAttribute("class", "close-modal-btn");
+    modalCloseBtn.addEventListener("click", () => {
+      state.modalMessage = "";
+      render();
+    });
+    modal.append(h3El,okButton, modalCloseBtn);
+    modalWrapper.append(modal);
+    document.body.append(modalWrapper);
+  } else if (state.modalMessage === "Stats") {
     const modalWrapper = document.createElement("section");
     modalWrapper.setAttribute("class", "modal-wrapper");
     const modal = document.createElement("div");
@@ -321,7 +363,9 @@ function renderModal() {
     const highscoreH3 = document.createElement("h3");
     highscoreH3.textContent = `High Score: ${state.user.highscore}`;
     const averageScoreH3 = document.createElement("h3");
-    averageScoreH3.textContent = `Average Score: ${getAverageScore().toFixed(2)}`;
+    averageScoreH3.textContent = `Average Score: ${getAverageScore().toFixed(
+      2
+    )}`;
     const okButton = document.createElement("button");
     okButton.setAttribute("class", "ok-button");
     okButton.textContent = "OK";
@@ -397,6 +441,19 @@ function signIn(username, password) {
       }
     });
 }
+
+function fetchLeaderboard() {
+  return fetch(`http://localhost:3000/users?_sort=highscore&_order=desc`)
+    .then((resp) => resp.json())
+    .then(
+      (users) =>
+        (state.leaderboard = users.map((user) => ({
+          id: user.id,
+          highscore: user.highscore,
+        })))
+    );
+}
+
 function updateUserScore(user) {
   fetch(`http://localhost:3000/users/${user.id}`, {
     method: "PATCH",

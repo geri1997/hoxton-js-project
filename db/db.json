@@ -17,6 +17,18 @@
       "password": "test123",
       "scores": [],
       "highscore": 0
+    },
+    {
+      "id": "geri",
+      "password": "geri",
+      "scores": [100],
+      "highscore": 100
+    },
+    {
+      "id": "rinor",
+      "password": "rinor",
+      "scores": [50,50],
+      "highscore": 50
     }
   ]
 }
