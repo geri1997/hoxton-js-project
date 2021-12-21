@@ -21,6 +21,17 @@ const state = {
 	currentScore: 0,
 	leaderboard: []
 };
+
+//HELPER FUNCTIONS
+
+function getAverageScore() {
+	if (state.user.scores.length === 0) return 0;
+	let average = 0;
+	for (const score of state.user.scores) {
+		average = average + score;
+	}
+	return average / state.user.scores.length;
+}
 // RENDER FUNCTIONS
 
 function renderHeader() {
