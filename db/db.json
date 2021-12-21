@@ -3,12 +3,20 @@
     {
       "id": "test",
       "password": "test123",
-      "scores": []
+      "scores": [
+        1230350,
+        3150,
+        0,
+        50,
+        3150
+      ],
+      "highscore": 1230350
     },
     {
       "id": "test1",
       "password": "test123",
-      "scores": []
+      "scores": [],
+      "highscore": 0
     }
   ]
 }
