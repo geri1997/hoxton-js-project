@@ -21,27 +21,7 @@ const state = {
 	currentScore: 0,
 	leaderboard: []
 };
-
-//HELPER FUNCTIONS
-
-startGameBtn.addEventListener("click", () => {
-	getQuestions().then((questions) => {
-		const parser = new DOMParser();
-		state.questions = questions;
-		state.questions.forEach((question) => {
-			question.correct_answer = parser.parseFromString(question.correct_answer, "text/html").body.innerHTML;
-			question.incorrect_answers = question.incorrect_answers.map((answer) => parser.parseFromString(answer, "text/html").body.innerHTML);
-			const shuffledAnswers = question.incorrect_answers;
-			shuffledAnswers.push(question.correct_answer);
-			shuffledAnswers.sort(() => Math.random() - 0.5);
-			question.shuffledAnswers = shuffledAnswers;
-		});
-		state.gameHasStarted = true;
-		render();
-	});
-});
-
-// // RENDER FUNCTIONS
+// RENDER FUNCTIONS
 
 function renderHeader() {
 	const headerEl = document.createElement("header");
