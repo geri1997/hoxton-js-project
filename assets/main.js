@@ -21,7 +21,8 @@ const state = {
 		{ name: "History", id: 23 }
 	],
 	selectedCategory: { name: "All Categories", id: "" },
-	selectedDifficulty: "easy"
+	selectedDifficulty: "easy",
+	currentScore: 0
 };
 
 //HELPER FUNCTIONS
@@ -37,7 +38,7 @@ function renderHeader() {
 	const headerEl = document.createElement("header");
 
 	const currentScoreEl = document.createElement("span");
-	currentScoreEl.textContent = `Current Score: 0`;
+	currentScoreEl.textContent = `Current Score: ${state.currentScore}`;
 
 	const h1El = document.createElement("h1");
 	h1El.textContent = "Who wants to be a GeRinnionaire";
@@ -226,15 +227,6 @@ function renderGameMenu(mainEl) {
 
 	mainEl.append(difficultyLabel, categoriesDiv, startGameBtn);
 }
-/* <div class="question">
-				<h2>random question nr 1</h2>
-			</div>
-			<section class="answers">
-				<button class="answer">answer1</button>
-				<button class="answer">answer1</button>
-				<button class="answer">answer1</button>
-				<button class="answer">answer1</button> 
-        </section>*/
 
 function renderGame(mainEl) {
 	const questionDiv = document.createElement("div");
@@ -254,6 +246,8 @@ function renderGame(mainEl) {
 			state.questionAnswered = true;
 			if (answerBtn.textContent !== state.questions[state.question].correct_answer) {
 				state.gameLost = true;
+			} else {
+				state.currentScore = state.currentScore + 50 * 2 ** state.question;
 			}
 			render();
 		});
@@ -266,7 +260,7 @@ function renderGame(mainEl) {
 		}
 	}
 	if (state.questionAnswered) {
-		if (!state.gameLost) {
+		if (!state.gameLost && state.question < 14) {
 			const continueBtn = document.createElement("button");
 			continueBtn.setAttribute("class", "game-button");
 			continueBtn.textContent = "Continue";
@@ -281,6 +275,7 @@ function renderGame(mainEl) {
 			mainMenuBtn.setAttribute("class", "game-button");
 			mainMenuBtn.textContent = "Go to main menu";
 			mainMenuBtn.addEventListener("click", () => {
+				state.currentScore = 0;
 				state.gameHasStarted = false;
 				state.question = 0;
 				state.questionAnswered = false;
