@@ -7,6 +7,8 @@ const state = {
 	questions: [],
 	question: 0,
 	gameHasStarted: false,
+	questionAnswered: false,
+	gameLost: false,
 	modalMessage: "",
 	allCategories: [
 		{ name: "All Categories", id: "" },
@@ -248,9 +250,49 @@ function renderGame(mainEl) {
 		answerBtn.setAttribute("class", "answer");
 		answerBtn.textContent = answer;
 		answersSection.append(answerBtn);
+		answerBtn.addEventListener("click", () => {
+			state.questionAnswered = true;
+			if (answerBtn.textContent !== state.questions[state.question].correct_answer) {
+				state.gameLost = true;
+			}
+			render();
+		});
+		mainEl.append(questionDiv, answersSection);
+		if (state.questionAnswered) {
+			answerBtn.disabled = true;
+			if (answerBtn.textContent === state.questions[state.question].correct_answer) {
+				answerBtn.classList.add("right");
+			} else answerBtn.classList.add("wrong");
+		}
+	}
+	if (state.questionAnswered) {
+		if (!state.gameLost) {
+			const continueBtn = document.createElement("button");
+			continueBtn.setAttribute("class", "game-button");
+			continueBtn.textContent = "Continue";
+			mainEl.append(continueBtn);
+			continueBtn.addEventListener("click", () => {
+				state.question++;
+				state.questionAnswered = false;
+				render();
+			});
+		} else {
+			const mainMenuBtn = document.createElement("button");
+			mainMenuBtn.setAttribute("class", "game-button");
+			mainMenuBtn.textContent = "Go to main menu";
+			mainMenuBtn.addEventListener("click", () => {
+				state.gameHasStarted = false;
+				state.question = 0;
+				state.questionAnswered = false;
+				state.gameLost = false;
+				state.selectedCategory = { name: "All Categories", id: "" };
+				state.selectedDifficulty = "easy";
+				render();
+			});
+			mainEl.append(mainMenuBtn);
+		}
 	}
 
-	mainEl.append(questionDiv, answersSection);
 	questionDiv.append(questionH2);
 }
 
