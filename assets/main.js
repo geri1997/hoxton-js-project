@@ -270,6 +270,9 @@ function renderGame(mainEl) {
         state.questionAnswered = true;
         render();
       }
+	  if (state.questionAnswered){
+		clearInterval(intervalId);
+	  }
     }, 1000);
     mainEl.append(timerH3);
   }
@@ -311,6 +314,7 @@ function renderGame(mainEl) {
       mainEl.append(continueBtn);
       continueBtn.addEventListener("click", () => {
         state.question++;
+		state.time = 10;
         state.questionAnswered = false;
         render();
       });
@@ -328,6 +332,7 @@ function renderGame(mainEl) {
         state.gameHasStarted = false;
         state.question = 0;
         state.questionAnswered = false;
+		state.time=10
         state.gameLost = false;
         state.selectedCategory = { name: "All Categories", id: "" };
         state.selectedDifficulty = "easy";
