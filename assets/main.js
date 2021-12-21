@@ -30,7 +30,7 @@ const state = {
 // 	return shuffledAnswers;
 // }
 function getAverageScore() {
-  if (state.user.scores === []) return 0;
+  if (state.user.scores.length===0) return 0;
   let average = 0;
   for (const score of state.user.scores) {
     average = average + score;
