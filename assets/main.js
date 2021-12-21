@@ -24,23 +24,22 @@ const state = {
 
 //HELPER FUNCTIONS
 
-function getAverageScore() {
-<<<<<<< HEAD
-  if (state.user.scores.length === 0) return 0;
-  let average = 0;
-  for (const score of state.user.scores) {
-    average = average + score;
-  }
-  return average / state.user.scores.length;
-=======
-	if (state.user.scores.length === 0) return 0;
-	let average = 0;
-	for (const score of state.user.scores) {
-		average = average + score;
-	}
-	return average / state.user.scores.length;
->>>>>>> d2e325ef17d1b5c2f8df338e3274983efaf97501
-}
+startGameBtn.addEventListener("click", () => {
+	getQuestions().then((questions) => {
+		const parser = new DOMParser();
+		state.questions = questions;
+		state.questions.forEach((question) => {
+			question.correct_answer = parser.parseFromString(question.correct_answer, "text/html").body.innerHTML;
+			question.incorrect_answers = question.incorrect_answers.map((answer) => parser.parseFromString(answer, "text/html").body.innerHTML);
+			const shuffledAnswers = question.incorrect_answers;
+			shuffledAnswers.push(question.correct_answer);
+			shuffledAnswers.sort(() => Math.random() - 0.5);
+			question.shuffledAnswers = shuffledAnswers;
+		});
+		state.gameHasStarted = true;
+		render();
+	});
+});
 
 // // RENDER FUNCTIONS
 
@@ -319,117 +318,112 @@ function renderGame(mainEl) {
 }
 
 function renderModal() {
-  if (state.modalMessage === "Leaderboard") {
-    const modalWrapper = document.createElement("section");
-    modalWrapper.setAttribute("class", "modal-wrapper");
-    modalWrapper.addEventListener("click", (e) => {
-      if (e.target === modalWrapper) {
-        state.modalMessage = "";
-        render();
-      }
-    });
-    const modal = document.createElement("div");
-    modal.setAttribute("class", "modal stats");
+	if (state.modalMessage === "Leaderboard") {
+		const modalWrapper = document.createElement("section");
+		modalWrapper.setAttribute("class", "modal-wrapper");
+		modalWrapper.addEventListener("click", (e) => {
+			if (e.target === modalWrapper) {
+				state.modalMessage = "";
+				render();
+			}
+		});
+		const modal = document.createElement("div");
+		modal.setAttribute("class", "modal stats");
 
-    h2El = document.createElement("h2");
-    h2El.textContent = "Leaderboard";
-    modal.append(h2El);
-    for (let i = 0; i < 3; i++) {
-      const highscoreH3 = document.createElement("h3");
-      highscoreH3.textContent = `${i + 1}. ${state.leaderboard[i].id} : ${
-        state.leaderboard[i].highscore
-      }`;
-      modal.append(highscoreH3);
-    }
-    const h3El = document.createElement("h3");
-    const currentRank =
-      state.leaderboard.findIndex((user) => user.id === state.user.id) + 1;
-    h3El.textContent = `Your current rank is: ${currentRank}`;
+		h2El = document.createElement("h2");
+		h2El.textContent = "Leaderboard";
+		modal.append(h2El);
+		for (let i = 0; i < 3; i++) {
+			const highscoreH3 = document.createElement("h3");
+			highscoreH3.textContent = `${i + 1}. ${state.leaderboard[i].id} : ${state.leaderboard[i].highscore}`;
+			modal.append(highscoreH3);
+		}
+		const h3El = document.createElement("h3");
+		const currentRank = state.leaderboard.findIndex((user) => user.id === state.user.id) + 1;
+		h3El.textContent = `Your current rank is: ${currentRank}`;
 
-    const okButton = document.createElement("button");
-    okButton.setAttribute("class", "ok-button");
-    okButton.textContent = "OK";
-    okButton.addEventListener("click", () => {
-      state.modalMessage = "";
-      render();
-    });
-    const modalCloseBtn = document.createElement("button");
-    modalCloseBtn.textContent = "X";
-    modalCloseBtn.setAttribute("class", "close-modal-btn");
-    modalCloseBtn.addEventListener("click", () => {
-      state.modalMessage = "";
-      render();
-    });
-    modal.append(h3El, okButton, modalCloseBtn);
-    modalWrapper.append(modal);
-    document.body.append(modalWrapper);
-  } else if (state.modalMessage === "Stats") {
-    const modalWrapper = document.createElement("section");
-    modalWrapper.setAttribute("class", "modal-wrapper");
-	modalWrapper.addEventListener("click", (e) => {
-		if (e.target === modalWrapper) {
-		  state.modalMessage=''
-		  render()
-		}
-	  });
-    const modal = document.createElement("div");
-    modal.setAttribute("class", "modal stats");
-    h2El = document.createElement("h2");
-    h2El.textContent = state.user.id;
-    const highscoreH3 = document.createElement("h3");
-    highscoreH3.textContent = `High Score: ${state.user.highscore}`;
-    const averageScoreH3 = document.createElement("h3");
-    averageScoreH3.textContent = `Average Score: ${getAverageScore().toFixed(
-      2
-    )}`;
-    const okButton = document.createElement("button");
-    okButton.setAttribute("class", "ok-button");
-    okButton.textContent = "OK";
-    okButton.addEventListener("click", () => {
-      state.modalMessage = "";
-      render();
-    });
-    const modalCloseBtn = document.createElement("button");
-    modalCloseBtn.textContent = "X";
-    modalCloseBtn.setAttribute("class", "close-modal-btn");
-    modalCloseBtn.addEventListener("click", () => {
-      state.modalMessage = "";
-      render();
-    });
-    modal.append(h2El, highscoreH3, averageScoreH3, okButton, modalCloseBtn);
-    modalWrapper.append(modal);
-    document.body.append(modalWrapper);
-  } else if (state.modalMessage !== "") {
-    const modalWrapper = document.createElement("section");
-    modalWrapper.setAttribute("class", "modal-wrapper");
-	modalWrapper.addEventListener("click", (e) => {
-		if (e.target === modalWrapper) {
-		  state.modalMessage=''
-		  render()
-		}
-	  });
-    const modal = document.createElement("div");
-    modal.setAttribute("class", "modal");
-    h2El = document.createElement("h2");
-    h2El.textContent = state.modalMessage;
-    const okButton = document.createElement("button");
-    okButton.setAttribute("class", "ok-button");
-    okButton.textContent = "OK";
-    okButton.addEventListener("click", () => {
-      state.modalMessage = "";
-      render();
-    });
-    const modalCloseBtn = document.createElement("button");
-    modalCloseBtn.textContent = "X";
-    modalCloseBtn.setAttribute("class", "close-modal-btn");
-    modalCloseBtn.addEventListener("click", () => {
-      state.modalMessage = "";
-      render();
-    });
-    modal.append(h2El, okButton, modalCloseBtn);
-    modalWrapper.append(modal);
-    document.body.append(modalWrapper);
-  }
+		const okButton = document.createElement("button");
+		okButton.setAttribute("class", "ok-button");
+		okButton.textContent = "OK";
+		okButton.addEventListener("click", () => {
+			state.modalMessage = "";
+			render();
+		});
+		const modalCloseBtn = document.createElement("button");
+		modalCloseBtn.textContent = "X";
+		modalCloseBtn.setAttribute("class", "close-modal-btn");
+		modalCloseBtn.addEventListener("click", () => {
+			state.modalMessage = "";
+			render();
+		});
+		modal.append(h3El, okButton, modalCloseBtn);
+		modalWrapper.append(modal);
+		document.body.append(modalWrapper);
+	} else if (state.modalMessage === "Stats") {
+		const modalWrapper = document.createElement("section");
+		modalWrapper.setAttribute("class", "modal-wrapper");
+		modalWrapper.addEventListener("click", (e) => {
+			if (e.target === modalWrapper) {
+				state.modalMessage = "";
+				render();
+			}
+		});
+		const modal = document.createElement("div");
+		modal.setAttribute("class", "modal stats");
+		h2El = document.createElement("h2");
+		h2El.textContent = state.user.id;
+		const highscoreH3 = document.createElement("h3");
+		highscoreH3.textContent = `High Score: ${state.user.highscore}`;
+		const averageScoreH3 = document.createElement("h3");
+		averageScoreH3.textContent = `Average Score: ${getAverageScore().toFixed(2)}`;
+		const okButton = document.createElement("button");
+		okButton.setAttribute("class", "ok-button");
+		okButton.textContent = "OK";
+		okButton.addEventListener("click", () => {
+			state.modalMessage = "";
+			render();
+		});
+		const modalCloseBtn = document.createElement("button");
+		modalCloseBtn.textContent = "X";
+		modalCloseBtn.setAttribute("class", "close-modal-btn");
+		modalCloseBtn.addEventListener("click", () => {
+			state.modalMessage = "";
+			render();
+		});
+		modal.append(h2El, highscoreH3, averageScoreH3, okButton, modalCloseBtn);
+		modalWrapper.append(modal);
+		document.body.append(modalWrapper);
+	} else if (state.modalMessage !== "") {
+		const modalWrapper = document.createElement("section");
+		modalWrapper.setAttribute("class", "modal-wrapper");
+		modalWrapper.addEventListener("click", (e) => {
+			if (e.target === modalWrapper) {
+				state.modalMessage = "";
+				render();
+			}
+		});
+		const modal = document.createElement("div");
+		modal.setAttribute("class", "modal");
+		h2El = document.createElement("h2");
+		h2El.textContent = state.modalMessage;
+		const okButton = document.createElement("button");
+		okButton.setAttribute("class", "ok-button");
+		okButton.textContent = "OK";
+		okButton.addEventListener("click", () => {
+			state.modalMessage = "";
+			render();
+		});
+		const modalCloseBtn = document.createElement("button");
+		modalCloseBtn.textContent = "X";
+		modalCloseBtn.setAttribute("class", "close-modal-btn");
+		modalCloseBtn.addEventListener("click", () => {
+			state.modalMessage = "";
+			render();
+		});
+		modal.append(h2El, okButton, modalCloseBtn);
+		modalWrapper.append(modal);
+		document.body.append(modalWrapper);
+	}
 }
 
 function render() {
