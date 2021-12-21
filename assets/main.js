@@ -270,7 +270,7 @@ function renderGame(mainEl) {
 				state.gameLost = true;
 				clearInterval(intervalId);
 				state.questionAnswered = true;
-				renderAnswers(answersSection);
+				render();
 			}
 			if (state.questionAnswered) {
 				clearInterval(intervalId);
