@@ -30,16 +30,27 @@ main {
   background-color: #560bad;
   position: relative;
 }
-.timer{
-	position: absolute;
-	right: 5rem;
-	top: 4rem;
-	font-size: 1.5rem;
+.timer {
+  position: absolute;
+  right: 5rem;
+  top: 4rem;
+  font-size: 1.5rem;
+}
+.joker-btn {
+  justify-self: center;
+  padding: 1rem;
+  color: white;
+  background: #4631ee;
+  cursor: pointer;
+}
+.joker-btn.used {
+  background: #4731ee70;
+  cursor: not-allowed;
 }
 .game-main {
   display: grid;
   place-content: center;
-  gap: 4rem;
+  gap: 3rem;
 }
 .answers {
   display: grid;
@@ -51,7 +62,7 @@ main {
   font-size: 2rem;
 }
 .answer {
-  padding: 3.5rem 5rem;
+  padding: 1rem;
   border-radius: 1rem;
   background: #4631ee;
   color: white;

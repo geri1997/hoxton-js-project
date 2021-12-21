@@ -5,7 +5,7 @@ const state = {
     scores: [1230350, 3150, 0, 50, 3150],
     highscore: 1230350,
   },
-  time: 3,
+  time: 60,
   questions: [],
   question: 0,
   gameHasStarted: false,
@@ -26,9 +26,16 @@ const state = {
   selectedDifficulty: "easy",
   currentScore: 0,
   leaderboard: [],
+  jokerUsed: false,
+  jokerIncorrectAnswers: [],
 };
 
 //HELPER FUNCTIONS
+function getJokerIncorrectAnswers() {
+  const incorretAnswers = state.questions[state.question].incorrect_answers;
+  incorretAnswers.sort(() => Math.random() - 0.5);
+  return incorretAnswers.slice(0, 2);
+}
 
 function getAverageScore() {
   if (state.user.scores.length === 0) return 0;
@@ -218,7 +225,7 @@ function renderGameMenu(mainEl) {
         question.incorrect_answers = question.incorrect_answers.map(
           (answer) => parser.parseFromString(answer, "text/html").body.innerHTML
         );
-        const shuffledAnswers = question.incorrect_answers;
+        const shuffledAnswers = [...question.incorrect_answers];
         shuffledAnswers.push(question.correct_answer);
         shuffledAnswers.sort(() => Math.random() - 0.5);
         question.shuffledAnswers = shuffledAnswers;
@@ -270,13 +277,42 @@ function renderGame(mainEl) {
         state.questionAnswered = true;
         render();
       }
-	  if (state.questionAnswered){
-		clearInterval(intervalId);
-	  }
+      if (state.questionAnswered) {
+        clearInterval(intervalId);
+      }
+      if (state.jokerUsed) {
+        clearInterval(intervalId);
+      }
     }, 1000);
-    mainEl.append(timerH3);
   }
-
+  if (!state.questionAnswered && state.jokerUsed) {
+    const intervalId = setInterval(() => {
+      state.time--;
+      timerH3.textContent = "Timer: " + state.time;
+      if (state.time === 0) {
+        state.gameLost = true;
+        clearInterval(intervalId);
+        state.questionAnswered = true;
+        render();
+      }
+      if (state.questionAnswered) {
+        clearInterval(intervalId);
+      }
+    }, 1000);
+  }
+  mainEl.append(timerH3);
+  const jokerBtn = document.createElement("button");
+  jokerBtn.setAttribute("class", "joker-btn");
+  jokerBtn.textContent = `50/50 Joker`;
+  jokerBtn.addEventListener("click", () => {
+    state.jokerUsed = true;
+    state.jokerIncorrectAnswers = getJokerIncorrectAnswers();
+    render();
+  });
+  if (state.jokerUsed) {
+    jokerBtn.disabled = true;
+    jokerBtn.classList.add("used");
+  }
   const answersSection = document.createElement("section");
   answersSection.setAttribute("class", "answers");
 
@@ -285,6 +321,9 @@ function renderGame(mainEl) {
     answerBtn.setAttribute("class", "answer");
     answerBtn.textContent = answer;
     answersSection.append(answerBtn);
+    if (state.jokerIncorrectAnswers.includes(answer)) {
+      answerBtn.classList.add("wrong");
+    }
     answerBtn.addEventListener("click", () => {
       state.questionAnswered = true;
       if (
@@ -296,7 +335,7 @@ function renderGame(mainEl) {
       }
       render();
     });
-    mainEl.append(questionDiv, answersSection);
+    mainEl.append(questionDiv, jokerBtn, answersSection);
     if (state.questionAnswered) {
       answerBtn.disabled = true;
       if (
@@ -314,7 +353,7 @@ function renderGame(mainEl) {
       mainEl.append(continueBtn);
       continueBtn.addEventListener("click", () => {
         state.question++;
-		state.time = 10;
+        state.time = 60;
         state.questionAnswered = false;
         render();
       });
@@ -328,11 +367,12 @@ function renderGame(mainEl) {
       mainMenuBtn.setAttribute("class", "game-button");
       mainMenuBtn.textContent = "Go to main menu";
       mainMenuBtn.addEventListener("click", () => {
+		state.jokerUsed=false
         state.currentScore = 0;
         state.gameHasStarted = false;
         state.question = 0;
         state.questionAnswered = false;
-		state.time=10
+        state.time = 60;
         state.gameLost = false;
         state.selectedCategory = { name: "All Categories", id: "" };
         state.selectedDifficulty = "easy";
