@@ -30,7 +30,7 @@ const state = {
 // 	return shuffledAnswers;
 // }
 function getAverageScore() {
-  if (state.user.scores.length===0) return 0;
+  if (state.user.scores.length === 0) return 0;
   let average = 0;
   for (const score of state.user.scores) {
     average = average + score;
@@ -319,6 +319,12 @@ function renderModal() {
   if (state.modalMessage === "Leaderboard") {
     const modalWrapper = document.createElement("section");
     modalWrapper.setAttribute("class", "modal-wrapper");
+    modalWrapper.addEventListener("click", (e) => {
+      if (e.target === modalWrapper) {
+        state.modalMessage = "";
+        render();
+      }
+    });
     const modal = document.createElement("div");
     modal.setAttribute("class", "modal stats");
 
@@ -332,9 +338,10 @@ function renderModal() {
       }`;
       modal.append(highscoreH3);
     }
-	const h3El = document.createElement('h3');
-	const currentRank= state.leaderboard.findIndex(user => user.id === state.user.id) +1;
-	h3El.textContent = `Your current rank is: ${currentRank}`
+    const h3El = document.createElement("h3");
+    const currentRank =
+      state.leaderboard.findIndex((user) => user.id === state.user.id) + 1;
+    h3El.textContent = `Your current rank is: ${currentRank}`;
 
     const okButton = document.createElement("button");
     okButton.setAttribute("class", "ok-button");
@@ -350,12 +357,18 @@ function renderModal() {
       state.modalMessage = "";
       render();
     });
-    modal.append(h3El,okButton, modalCloseBtn);
+    modal.append(h3El, okButton, modalCloseBtn);
     modalWrapper.append(modal);
     document.body.append(modalWrapper);
   } else if (state.modalMessage === "Stats") {
     const modalWrapper = document.createElement("section");
     modalWrapper.setAttribute("class", "modal-wrapper");
+	modalWrapper.addEventListener("click", (e) => {
+		if (e.target === modalWrapper) {
+		  state.modalMessage=''
+		  render()
+		}
+	  });
     const modal = document.createElement("div");
     modal.setAttribute("class", "modal stats");
     h2El = document.createElement("h2");
@@ -386,6 +399,12 @@ function renderModal() {
   } else if (state.modalMessage !== "") {
     const modalWrapper = document.createElement("section");
     modalWrapper.setAttribute("class", "modal-wrapper");
+	modalWrapper.addEventListener("click", (e) => {
+		if (e.target === modalWrapper) {
+		  state.modalMessage=''
+		  render()
+		}
+	  });
     const modal = document.createElement("div");
     modal.setAttribute("class", "modal");
     h2El = document.createElement("h2");
