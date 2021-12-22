@@ -56,13 +56,15 @@ main {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 2rem;
+	place-items: center;
 }
 .question h2 {
 	text-align: center;
 	font-size: 1.5rem;
 }
 .answer {
-	padding: 1rem;
+	width: 17.5rem;
+	height: 6rem;
 	border-radius: 1rem;
 	background: #4631ee;
 	color: white;
