@@ -288,7 +288,7 @@ function renderGame(mainEl) {
 		jokerBtn.classList.add("used");
 		renderAnswers(answersSection);
 	});
-	if (state.jokerUsed) {
+	if (state.jokerUsed || state.questionAnswered) {
 		jokerBtn.disabled = true;
 		jokerBtn.classList.add("used");
 	}
