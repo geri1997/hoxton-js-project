@@ -277,21 +277,6 @@ function renderGame(mainEl) {
 			}
 		}, 1000);
 	}
-	// if (!state.questionAnswered && state.jokerUsed) {
-	// 	const intervalId = setInterval(() => {
-	// 		state.time--;
-	// 		timerH3.textContent = "Timer: " + state.time;
-	// 		if (state.time === 0) {
-	// 			state.gameLost = true;
-	// 			clearInterval(intervalId);
-	// 			state.questionAnswered = true;
-	// 			renderAnswers(answersSection);
-	// 		}
-	// 		if (state.questionAnswered) {
-	// 			clearInterval(intervalId);
-	// 		}
-	// 	}, 1000);
-	// }
 	mainEl.append(timerH3);
 	const jokerBtn = document.createElement("button");
 	jokerBtn.setAttribute("class", "joker-btn");
@@ -299,6 +284,8 @@ function renderGame(mainEl) {
 	jokerBtn.addEventListener("click", () => {
 		state.jokerUsed = true;
 		state.jokerIncorrectAnswers = getJokerIncorrectAnswers();
+		jokerBtn.disabled = true;
+		jokerBtn.classList.add("used");
 		renderAnswers(answersSection);
 	});
 	if (state.jokerUsed) {
