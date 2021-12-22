@@ -319,6 +319,7 @@ function renderGame(mainEl) {
 			mainMenuBtn.textContent = "Go to main menu";
 			mainMenuBtn.addEventListener("click", () => {
 				state.jokerUsed = false;
+				state.jokerIncorrectAnswers = [];
 				state.currentScore = 0;
 				state.gameHasStarted = false;
 				state.question = 0;
