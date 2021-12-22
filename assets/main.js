@@ -24,7 +24,7 @@ const state = {
 	jokerUsed: false,
 	jokerIncorrectAnswers: [],
 	googleJokerUsed: false,
-  intervalID:null
+	intervalID: null
 };
 
 //HELPER FUNCTIONS
@@ -362,6 +362,7 @@ function renderGame(mainEl) {
 			mainMenuBtn.setAttribute("class", "game-button");
 			mainMenuBtn.textContent = "Go to main menu";
 			mainMenuBtn.addEventListener("click", () => {
+				state.googleJokerUsed = false;
 				state.jokerUsed = false;
 				state.jokerIncorrectAnswers = [];
 				state.currentScore = 0;
@@ -521,7 +522,7 @@ function renderModal() {
 
 function render() {
 	document.body.innerHTML = "";
-  clearInterval(state.intervalID);
+	clearInterval(state.intervalID);
 	renderHeader();
 	renderMain();
 	renderModal();
