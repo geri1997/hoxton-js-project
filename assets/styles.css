@@ -141,9 +141,15 @@ main {
 	display: grid;
 	place-content: center;
 	gap: 1.5rem;
-	backdrop-filter: blur(4px);
 }
-
+.play-as-guest {
+	display: grid;
+	place-content: center;
+	gap: 0.5rem;
+}
+.play-as-guest h2 {
+	text-align: center;
+}
 .sign-in form,
 .sign-up form {
 	display: grid;

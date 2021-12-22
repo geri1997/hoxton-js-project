@@ -1,10 +1,5 @@
 const state = {
-	user: {
-		id: "test",
-		password: "test123",
-		scores: [1230350, 3150, 0, 50, 3150],
-		highscore: 1230350
-	},
+	user: null,
 	time: 60,
 	questions: [],
 	question: 0,
@@ -60,12 +55,12 @@ function renderHeader() {
 	const statsAEl = document.createElement("a");
 	const leaderboardA = document.createElement("a");
 	statsAEl.textContent = "My Stats";
-	statsAEl.addEventListener("click", (e) => {
+	statsAEl.addEventListener("click", () => {
 		state.modalMessage = "Stats";
 		render();
 	});
 	leaderboardA.textContent = "Leaderboard";
-	leaderboardA.addEventListener("click", (e) => {
+	leaderboardA.addEventListener("click", () => {
 		state.modalMessage = "Leaderboard";
 		fetchLeaderboard().then(() => {
 			render();
@@ -89,6 +84,7 @@ function renderMain() {
 	if (state.user === null) {
 		renderSignIn(mainEl);
 		renderSignUp(mainEl);
+		renderPlayAsGuest(mainEl);
 	} else if (!state.gameHasStarted) {
 		mainEl.setAttribute("class", "menu-main");
 		renderGameMenu(mainEl);
@@ -142,6 +138,18 @@ function renderSignIn(mainEl) {
 
 	mainEl.append(signInSection);
 }
+
+function renderPlayAsGuest(mainEl) {
+	const playAsGuestH2 = document.createElement("h2");
+	playAsGuestH2.textContent = "or";
+	const playAsGuestSection = document.createElement("section");
+	playAsGuestSection.setAttribute("class", "play-as-guest");
+	const playAsGuestButton = document.createElement("button");
+	playAsGuestButton.textContent = "Play as Guest";
+	playAsGuestButton.setAttribute("class", "cta");
+	playAsGuestSection.append(playAsGuestH2, playAsGuestButton);
+	mainEl.append(playAsGuestSection);
+}
 function renderSignUp(mainEl) {
 	const signUpSection = document.createElement("section");
 	signUpSection.setAttribute("class", "sign-up");
@@ -161,7 +169,7 @@ function renderSignUp(mainEl) {
 		signUp(user);
 	});
 
-	signUpUserLabel = document.createElement("label");
+	const signUpUserLabel = document.createElement("label");
 	signUpUserLabel.setAttribute("class", "sign-up-label");
 	signUpUserLabel.textContent = "Username: ";
 	const signUpUserInput = document.createElement("input");
@@ -171,7 +179,7 @@ function renderSignUp(mainEl) {
 	signUpUserInput.placeholder = "Type your username...";
 	signUpUserLabel.append(signUpUserInput);
 
-	signUpPasswordLabel = document.createElement("label");
+	const signUpPasswordLabel = document.createElement("label");
 	signUpPasswordLabel.setAttribute("class", "sign-up-label");
 	signUpPasswordLabel.textContent = "Password: ";
 	const signUpPasswordInput = document.createElement("input");
@@ -207,7 +215,7 @@ function renderGameMenu(mainEl) {
 	const startGameBtn = document.createElement("button");
 	startGameBtn.setAttribute("class", "start-btn");
 	startGameBtn.textContent = "START GAME";
-	selectEl.addEventListener("change", (e) => {
+	selectEl.addEventListener("change", () => {
 		state.selectedDifficulty = selectEl.value;
 
 		render();
@@ -377,7 +385,7 @@ function renderModal() {
 		const modal = document.createElement("div");
 		modal.setAttribute("class", "modal stats");
 
-		h2El = document.createElement("h2");
+		const h2El = document.createElement("h2");
 		h2El.textContent = "Leaderboard";
 		modal.append(h2El);
 		for (let i = 0; i < 3; i++) {
@@ -417,7 +425,7 @@ function renderModal() {
 		});
 		const modal = document.createElement("div");
 		modal.setAttribute("class", "modal stats");
-		h2El = document.createElement("h2");
+		const h2El = document.createElement("h2");
 		h2El.textContent = state.user.id;
 		const highscoreH3 = document.createElement("h3");
 		highscoreH3.textContent = `High Score: ${state.user.highscore}`;
@@ -451,7 +459,7 @@ function renderModal() {
 		});
 		const modal = document.createElement("div");
 		modal.setAttribute("class", "modal");
-		h2El = document.createElement("h2");
+		const h2El = document.createElement("h2");
 		h2El.textContent = state.modalMessage;
 		const okButton = document.createElement("button");
 		okButton.setAttribute("class", "ok-button");
