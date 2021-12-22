@@ -32,6 +32,12 @@ function getJokerIncorrectAnswers() {
 	return incorretAnswers.slice(0, 2);
 }
 
+function playSound(sound) {
+	const audio = document.createElement("audio");
+	audio.setAttribute("src", `sounds/${sound}.mp3`);
+	audio.play();
+}
+
 function getAverageScore() {
 	if (state.user.scores.length === 0) return 0;
 	let average = 0;
@@ -239,6 +245,7 @@ function renderGameMenu(mainEl) {
 				question.shuffledAnswers = shuffledAnswers;
 			});
 			state.gameHasStarted = true;
+			playSound("play");
 			render();
 		});
 	});
@@ -299,6 +306,7 @@ function renderGame(mainEl) {
 		state.jokerIncorrectAnswers = getJokerIncorrectAnswers();
 		jokerBtn.disabled = true;
 		jokerBtn.classList.add("used");
+		playSound("joker");
 		renderAnswers(answersSection);
 	});
 	if (state.jokerUsed || state.questionAnswered) {
@@ -365,8 +373,10 @@ function renderAnswers(answersSection) {
 			state.questionAnswered = true;
 			if (answerBtn.textContent !== state.questions[state.question].correct_answer) {
 				state.gameLost = true;
+				playSound("wrong-answer");
 			} else {
 				state.currentScore = state.currentScore + 50 * 2 ** state.question;
+				playSound("right-answer");
 			}
 			render();
 		});
