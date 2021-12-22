@@ -257,7 +257,7 @@ function renderGame(mainEl) {
 	const questionDiv = document.createElement("div");
 	questionDiv.setAttribute("class", "question");
 	const questionH2 = document.createElement("h2");
-	questionH2.innerHTML = state.questions[state.question].question;
+	questionH2.innerHTML = `${state.question + 1}. ${state.questions[state.question].question}`;
 
 	const timerH3 = document.createElement("h3");
 	timerH3.textContent = "Timer: " + state.time;
