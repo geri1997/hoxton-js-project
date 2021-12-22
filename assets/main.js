@@ -290,6 +290,7 @@ function renderGame(mainEl) {
 				state.gameLost = true;
 				clearInterval(intervalId);
 				state.questionAnswered = true;
+				playSound("wrong");
 				render();
 			}
 			if (state.questionAnswered) {
@@ -551,7 +552,7 @@ function updateUserScore(user) {
 }
 function signUp(user) {
 	fetch(`http://localhost:3000/users/${user.id}`).then((resp) => {
-		if (user.id === "guest") {
+		if (user.id.toLoverCase() === "guest") {
 			state.modalMessage = "This username cannot be taken";
 			render();
 		} else if (!resp.ok) {
