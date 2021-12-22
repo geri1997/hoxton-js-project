@@ -1,0 +1,19 @@
+{
+  "name": "gerinionnaire",
+  "version": "1.0.0",
+  "description": "hoxton project js",
+  "main": "index.js",
+  "scripts": {
+    "start" : "db/db.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/geri1997/hoxton-js-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/geri1997/hoxton-js-project/issues"
+  },
+  "homepage": "https://github.com/geri1997/hoxton-js-project#readme"
+}
