@@ -23,7 +23,8 @@ const state = {
 	leaderboard: [],
 	jokerUsed: false,
 	jokerIncorrectAnswers: [],
-	googleJokerUsed: false
+	googleJokerUsed: false,
+  intervalID:null
 };
 
 //HELPER FUNCTIONS
@@ -284,18 +285,18 @@ function renderGame(mainEl) {
 	timerH3.textContent = "Timer: " + state.time;
 	timerH3.setAttribute("class", "timer");
 	if (!state.questionAnswered) {
-		const intervalId = setInterval(() => {
+		state.intervalID = setInterval(() => {
 			state.time--;
 			timerH3.textContent = "Timer: " + state.time;
 			if (state.time === 0) {
 				state.gameLost = true;
-				clearInterval(intervalId);
+				clearInterval(state.intervalID);
 				state.questionAnswered = true;
-				playSound("wrong");
+				playSound("wrong-answer");
 				render();
 			}
 			if (state.questionAnswered) {
-				clearInterval(intervalId);
+				clearInterval(state.intervalID);
 			}
 		}, 1000);
 	}
@@ -311,7 +312,7 @@ function renderGame(mainEl) {
 		jokerBtn.disabled = true;
 		jokerBtn.classList.add("used");
 		playSound("joker");
-		renderAnswers(answersSection);
+		render();
 	});
 	if (state.jokerUsed || state.questionAnswered) {
 		jokerBtn.disabled = true;
@@ -520,6 +521,7 @@ function renderModal() {
 
 function render() {
 	document.body.innerHTML = "";
+  clearInterval(state.intervalID);
 	renderHeader();
 	renderMain();
 	renderModal();
