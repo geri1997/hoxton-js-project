@@ -326,7 +326,7 @@ function renderGame(mainEl) {
 		state.googleJokerUsed = true;
 		askGoogleBtn.disabled = true;
 		playSound("joker");
-		window.open(`https://letmegooglethat.com/?q=${state.questions[state.question].question}`, "_blank");
+		window.open(`https://letmegooglethat.com/?q=${questionH2.innerHTML}`, "_blank");
 		askGoogleBtn.classList.add("used");
 	});
 	if (state.googleJokerUsed || state.questionAnswered) {
