@@ -70,7 +70,7 @@ function renderHeader() {
 
 	headerEl.append(currentScoreEl, h1El, navEl);
 
-	if (state.user === null || state.gameHasStarted) {
+	if (state.user === null || state.gameHasStarted || state.user.id === "Guest") {
 		navEl.style.visibility = "hidden";
 	}
 	if (!state.gameHasStarted) {
@@ -148,6 +148,11 @@ function renderPlayAsGuest(mainEl) {
 	playAsGuestButton.textContent = "Play as Guest";
 	playAsGuestButton.setAttribute("class", "cta");
 	playAsGuestSection.append(playAsGuestH2, playAsGuestButton);
+	playAsGuestButton.addEventListener("click", () => {
+		state.user = { id: "Guest", scores: [], highscore: 0 };
+		render();
+	});
+
 	mainEl.append(playAsGuestSection);
 }
 function renderSignUp(mainEl) {
@@ -321,7 +326,9 @@ function renderGame(mainEl) {
 			if (state.currentScore > state.user.highscore) {
 				state.user.highscore = state.currentScore;
 			}
-			updateUserScore(state.user);
+			if (state.user.id !== "Guest") {
+				updateUserScore(state.user);
+			}
 			const mainMenuBtn = document.createElement("button");
 			mainMenuBtn.setAttribute("class", "game-button");
 			mainMenuBtn.textContent = "Go to main menu";
@@ -534,7 +541,10 @@ function updateUserScore(user) {
 }
 function signUp(user) {
 	fetch(`http://localhost:3000/users/${user.id}`).then((resp) => {
-		if (!resp.ok) {
+		if (user.id === "guest") {
+			state.modalMessage = "This username cannot be taken";
+			render();
+		} else if (!resp.ok) {
 			state.user = user;
 			createNewUserOnServer(user);
 			state.modalMessage = "Welcome";
