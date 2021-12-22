@@ -4,7 +4,7 @@
   "description": "hoxton project js",
   "main": "index.js",
   "scripts": {
-    "start" : "db/db.json"
+    "start": "json-server --watch db/db.json"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/geri1997/hoxton-js-project/issues"
   },
-  "homepage": "https://github.com/geri1997/hoxton-js-project#readme"
+  "homepage": "https://github.com/geri1997/hoxton-js-project#readme",
+  "dependencies": {
+    "json-server": "^0.17.0"
+  }
 }
