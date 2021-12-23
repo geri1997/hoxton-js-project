@@ -79,6 +79,12 @@ main {
   transition: 0.5s;
   cursor: pointer;
 }
+.answer:nth-of-type(even){
+  justify-self: start;
+}
+.answer:nth-of-type(odd){
+  justify-self: end;
+}
 
 .answer:hover {
   background: white;
