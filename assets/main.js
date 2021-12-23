@@ -391,6 +391,7 @@ function renderAnswers(answersSection) {
 		answersSection.append(answerBtn);
 		if (state.jokerIncorrectAnswers.includes(answer)) {
 			answerBtn.classList.add("wrong");
+			answerBtn.disabled=true
 		}
 		answerBtn.addEventListener("click", () => {
 			state.questionAnswered = true;
