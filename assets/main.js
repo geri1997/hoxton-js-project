@@ -280,7 +280,8 @@ function renderGame(mainEl) {
 	questionDiv.setAttribute("class", "question");
 	const questionH2 = document.createElement("h2");
 	questionH2.innerHTML = `${state.question + 1}. ${state.questions[state.question].question}`;
-
+	const questionWithoutNr = document.createElement('p')
+	questionWithoutNr.innerHTML=`${state.questions[state.question].question}`
 	const timerH3 = document.createElement("h3");
 	timerH3.textContent = "Timer: " + state.time;
 	timerH3.setAttribute("class", "timer");
@@ -326,7 +327,7 @@ function renderGame(mainEl) {
 		state.googleJokerUsed = true;
 		askGoogleBtn.disabled = true;
 		playSound("joker");
-		window.open(`https://letmegooglethat.com/?q=${questionH2.innerHTML}`, "_blank");
+		window.open(`https://letmegooglethat.com/?q=${questionWithoutNr.innerHTML}`, "_blank");
 		askGoogleBtn.classList.add("used");
 	});
 	if (state.googleJokerUsed || state.questionAnswered) {
