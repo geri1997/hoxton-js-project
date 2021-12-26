@@ -537,7 +537,7 @@ function getQuestions() {
 }
 
 function signIn(username, password) {
-	return fetch(`http://localhost:3000/users/${username}`)
+	return fetch(`https://tall-cheddar-chanter.glitch.me/users/${username}`)
 		.then(function (resp) {
 			return resp.json();
 		})
@@ -554,7 +554,7 @@ function signIn(username, password) {
 }
 
 function fetchLeaderboard() {
-	return fetch(`http://localhost:3000/users?_sort=highscore&_order=desc`)
+	return fetch(`https://tall-cheddar-chanter.glitch.me/users?_sort=highscore&_order=desc`)
 		.then((resp) => resp.json())
 		.then(
 			(users) =>
@@ -566,7 +566,7 @@ function fetchLeaderboard() {
 }
 
 function updateUserScore(user) {
-	fetch(`http://localhost:3000/users/${user.id}`, {
+	fetch(`https://tall-cheddar-chanter.glitch.me/users/${user.id}`, {
 		method: "PATCH",
 		headers: {
 			"Content-Type": "application/json"
@@ -575,7 +575,7 @@ function updateUserScore(user) {
 	});
 }
 function signUp(user) {
-	fetch(`http://localhost:3000/users/${user.id}`).then((resp) => {
+	fetch(`https://tall-cheddar-chanter.glitch.me/users/${user.id}`).then((resp) => {
 		if (user.id.toLowerCase() === "guest") {
 			state.modalMessage = "This username cannot be taken";
 			render();
@@ -591,7 +591,7 @@ function signUp(user) {
 	});
 }
 function createNewUserOnServer(user) {
-	fetch("http://localhost:3000/users/", {
+	fetch("https://tall-cheddar-chanter.glitch.me/users/", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json"

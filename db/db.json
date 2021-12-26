@@ -39,6 +39,16 @@
         50
       ],
       "highscore": 50
+    },
+    {
+      "id": "hoxton",
+      "password": "123",
+      "scores": [
+        350,
+        1638350,
+        350
+      ],
+      "highscore": 1638350
     }
   ]
 }
