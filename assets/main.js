@@ -562,7 +562,7 @@ function getQuestions() {
 }
 
 function signIn(username, password) {
-  return fetch(`http://localhost:3000/${username}`)
+  return fetch(`https://tall-cheddar-chanter.glitch.me/users/${username}`)
     .then(function (resp) {
       return resp.json();
     })
@@ -579,7 +579,9 @@ function signIn(username, password) {
 }
 
 function fetchLeaderboard() {
-  return fetch(`http://localhost:3000?_sort=highscore&_order=desc`)
+  return fetch(
+    `https://tall-cheddar-chanter.glitch.me/users?_sort=highscore&_order=desc`
+  )
     .then((resp) => resp.json())
     .then(
       (users) =>
@@ -591,7 +593,7 @@ function fetchLeaderboard() {
 }
 
 function updateUserScore(user) {
-  fetch(`http://localhost:3000/${user.id}`, {
+  fetch(`https://tall-cheddar-chanter.glitch.me/users/${user.id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json'
@@ -600,23 +602,25 @@ function updateUserScore(user) {
   });
 }
 function signUp(user) {
-  fetch(`http://localhost:3000/${user.id}`).then((resp) => {
-    if (user.id.toLowerCase() === 'guest') {
-      state.modalMessage = 'This username cannot be taken';
-      render();
-    } else if (!resp.ok) {
-      state.user = user;
-      createNewUserOnServer(user);
-      state.modalMessage = 'Welcome';
-      render();
-    } else {
-      state.modalMessage = 'This username already exists.';
-      render();
+  fetch(`https://tall-cheddar-chanter.glitch.me/users/${user.id}`).then(
+    (resp) => {
+      if (user.id.toLowerCase() === 'guest') {
+        state.modalMessage = 'This username cannot be taken';
+        render();
+      } else if (!resp.ok) {
+        state.user = user;
+        createNewUserOnServer(user);
+        state.modalMessage = 'Welcome';
+        render();
+      } else {
+        state.modalMessage = 'This username already exists.';
+        render();
+      }
     }
-  });
+  );
 }
 function createNewUserOnServer(user) {
-  fetch('http://localhost:3000/', {
+  fetch('https://tall-cheddar-chanter.glitch.me/users/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
