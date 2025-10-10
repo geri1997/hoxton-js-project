@@ -3,7 +3,7 @@ Proud to share: We finished a fun little web project built during the Hoxton cod
 Project: Geri and Rinor's Quiz App (gerinionnaire)
 A small, browser-first JavaScript app that demonstrates DOM manipulation, simple client-server interaction, and sound effects — all in plain JS. We built this to practice core front-end skills and to ship something playable fast, and although it deemed quite challenging considering the intervals and having to only use vanilla JS, it was quite a lot of fun too.
 
-What I learned
+What we learned
 
 - Solidified vanilla JS event handling and DOM updates.
 - Implemented a tiny server setup with `json-server` for local data during development.
