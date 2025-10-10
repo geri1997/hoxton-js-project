@@ -29,7 +29,7 @@ npm install
 npm start
 ```
 
-This runs `node server.js` per the project's `package.json` which serves the app; if you want to run only the mock API, you can also run `json-server --watch db/db.json --port 3001` (if installed globally).
+This runs `node server.js` per the project's `package.json` which serves the app; if you want to run only the mock API, you can also run `json-server --watch db/db.json --port 3000` (if installed globally).
 
 Try it
 
