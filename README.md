@@ -33,7 +33,7 @@ This runs `node server.js` per the project's `package.json` which serves the app
 
 Try it
 
-- Open index.js with Live Server in your browser after server started successfully.
+- Open index.js with Live Server in your browser.
 - Play through the quiz and listen for audio cues in the `sounds/` folder.
 
 Call to action
